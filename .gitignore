@@ -1,0 +1,60 @@
+## Core .NET Build Outputs
+[Bb]in/
+[Oo]bj/
+
+## IDE and Editor Files
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+## User-Specific and Local Configuration
+*.user
+*.userosscache
+appsettings.Development.json
+appsettings.Local.json
+
+## Secrets and Sensitive Files
+*.pfx
+*.key
+*.pem
+secrets.json
+.env
+
+## Testing Outputs
+TestResults/
+*.sequenced
+
+## Operating System Files
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+## Packages and Dependencies
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
