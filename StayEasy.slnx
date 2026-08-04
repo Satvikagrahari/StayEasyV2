@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="StayEasy.Application/StayEasy.Application.csproj" />
   <Project Path="StayEasy.Domain/StayEasy.Domain.csproj" />
   <Project Path="StayEasy.Infrastructure/StayEasy.Infrastructure.csproj" />

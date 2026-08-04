@@ -16,4 +16,8 @@
     <Folder Include="MIddleware\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameWorkCore.SqlServer" Version="10.0.10" />
+  </ItemGroup>
+
 </Project>

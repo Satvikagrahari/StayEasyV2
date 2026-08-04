@@ -4,7 +4,10 @@ using System.Text;
 
 namespace StayEasy.Domain.Entities
 {
-    internal class BookingStatus
+    public enum BookingStatus
     {
+        Peniding,
+        Confirmed,
+        Cancelled
     }
 }
