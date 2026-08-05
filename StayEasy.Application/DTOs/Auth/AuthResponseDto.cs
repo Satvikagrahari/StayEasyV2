@@ -4,7 +4,13 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Auth
 {
-    internal class AuthResponseDto
-    {
-    }
+    public record AuthResponseDto
+    (
+        int Id,
+        string Email,
+        string UserName,
+        string Role,
+        string Token,
+        DateTime ExpiresAt
+    );  
 }

@@ -4,7 +4,11 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Hotels
 {
-    internal class HotelResponseDto
-    {
-    }
+    public record HotelResponseDto
+    (
+        int HotelId,
+        string Name,
+        string Address,
+        string City
+    );
 }

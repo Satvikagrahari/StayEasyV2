@@ -4,7 +4,10 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Booking
 {
-    internal class CreateBookingDto
-    {
-    }
+    public record CreateBookingDto
+    (
+        int BookingId,
+        DateTime CheckIn,
+        DateTime CheckOut
+    );
 }

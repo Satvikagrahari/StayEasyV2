@@ -4,7 +4,10 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Hotels
 {
-    internal class CreateRoomDto
-    {
-    }
+    public record CreateRoomDto
+    (        
+        string RoomType,
+        decimal PricePerNight,
+        int Capacity
+    );
 }

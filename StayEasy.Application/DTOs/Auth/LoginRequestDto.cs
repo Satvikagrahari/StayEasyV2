@@ -4,7 +4,9 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Auth
 {
-    internal class LoginRequestDto
-    {
-    }
+    public record LoginRequestDto
+    (
+        string Email,
+        string Password
+    );
 }

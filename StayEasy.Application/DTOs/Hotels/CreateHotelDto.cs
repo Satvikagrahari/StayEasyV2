@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StayEasy.Application.DTOs
+namespace StayEasy.Application.DTOs.Hotels
 {
-    internal class CreateHotelDtos
-    {
-    }
+    public record CreateHotelDto
+    (
+        string Name,
+        string Address,
+        string City
+
+    );
 }

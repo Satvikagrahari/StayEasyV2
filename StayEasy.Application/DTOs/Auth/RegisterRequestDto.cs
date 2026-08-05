@@ -4,7 +4,11 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Auth
 {
-    internal class RegisterRequestDto
-    {
-    }
+    public record RegisterRequestDto
+    (
+        string Email,
+        string Password,
+        string UserName,
+        string? Role = "Customer"
+    );
 }
