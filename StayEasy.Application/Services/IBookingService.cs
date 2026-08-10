@@ -1,10 +1,13 @@
-﻿using System;
+﻿using StayEasy.Application.DTOs.Booking;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace StayEasy.Application.Services
 {
-    internal interface Interface1
+    public interface IBookingService
     {
+        Task<BookingResponseDto> CreateBookingAsync(Guid UserId, CreateBookingDto dto);
+        Task<BookingResponseDto> PayBookingAsync(Guid UserId, Guid BookingId, PayBookingDto dto);
     }
 }

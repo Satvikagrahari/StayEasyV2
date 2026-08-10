@@ -6,7 +6,7 @@ namespace StayEasy.Application.DTOs.Hotels
 {
     public record HotelResponseDto
     (
-        int HotelId,
+        Guid HotelId,
         string Name,
         string Address,
         string City

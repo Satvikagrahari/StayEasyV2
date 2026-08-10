@@ -6,8 +6,8 @@ namespace StayEasy.Application.DTOs.Hotels
 {
     public record RoomResponseDto
     (
-        int Id,
-        int HotelId,
+        Guid Id,
+        Guid HotelId,
         string RoomType,
         decimal PricePerNight,
         int Capacity

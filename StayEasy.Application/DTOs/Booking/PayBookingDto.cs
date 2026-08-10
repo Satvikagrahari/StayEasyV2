@@ -4,7 +4,12 @@ using System.Text;
 
 namespace StayEasy.Application.DTOs.Booking
 {
-    internal class PayBookingDto
-    {
-    }
+    public record PayBookingDto
+    (
+        string CardNumber,
+        string CardHolderName,
+        string ExpirationMonth,
+        string ExpirationYear,
+        string Cvv
+    );
 }

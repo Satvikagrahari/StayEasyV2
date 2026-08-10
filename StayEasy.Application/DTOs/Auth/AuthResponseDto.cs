@@ -6,7 +6,7 @@ namespace StayEasy.Application.DTOs.Auth
 {
     public record AuthResponseDto
     (
-        int Id,
+        Guid Id,
         string Email,
         string UserName,
         string Role,

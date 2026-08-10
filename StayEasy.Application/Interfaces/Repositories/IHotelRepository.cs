@@ -7,8 +7,8 @@ namespace StayEasy.Application.Interfaces.Repositories
 {
     public interface IHotelRepository
     {
-        Task<Hotel?> GetByIdAsync(int id);
-        Task<Hotel?> GetByIdWithRoomAsync(int id);
+        Task<Hotel?> GetByIdAsync(Guid id);
+        Task<Hotel?> GetByIdWithRoomAsync(Guid id);
         Task<IEnumerable<Hotel>> GetAllByCityAsync(string? city);
         Task AddAsync(Hotel hotel);
         Task UpdateAsync(Hotel hotel);
