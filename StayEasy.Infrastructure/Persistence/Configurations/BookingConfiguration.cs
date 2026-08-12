@@ -18,9 +18,7 @@ namespace StayEasy.Infrastructure.Persistence.Configurations
             builder.Property(u => u.TotalPrice).IsRequired().HasColumnType("decimal(18,2)");
             //Store the Enum as a readable String in the database instead of an Integer (0, 1, 2)
             builder.Property(b => b.Status).IsRequired().HasConversion<string>().HasMaxLength(30);
-
-        
-
+            builder.Property(b => b.PaymentTransactionId).HasMaxLength(100);
         }
     }
 }

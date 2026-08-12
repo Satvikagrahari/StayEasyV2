@@ -10,6 +10,7 @@ namespace StayEasy.Domain.Entities
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-      
+        public ICollection<Room> Rooms { get; set; } = new List<Room>();
+
     }
 }

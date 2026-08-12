@@ -6,7 +6,7 @@ namespace StayEasy.Domain.Entities
 {
     public enum BookingStatus
     {
-        Peniding,
+        Pending,
         Confirmed,
         Cancelled
     }

@@ -6,8 +6,8 @@ namespace StayEasy.Application.DTOs.Booking
 {
     public record BookingResponseDto
     (
-        int Id,
-        int RoomId,
+        Guid Id,
+        Guid RoomId,
         DateTime CheckInDate,
         DateTime CheckOutDate,
         decimal TotalPrice,
