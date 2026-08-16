@@ -1,4 +1,4 @@
-﻿using StayEasy.Application.DTOs.Booking;
+using StayEasy.Application.DTOs.Booking;
 using StayEasy.Application.Interfaces.External;
 using StayEasy.Application.Interfaces.Repositories;
 using StayEasy.Domain.Entities;
@@ -73,7 +73,7 @@ namespace StayEasy.Application.Services
 
             var payResult = await _paymentService.ProcessPaymentAsync(new PaymentRequestDto(booking.BookingId, booking.TotalPrice, dto.CardNumber, dto.CardHolderName));
 
-            if (!payResult.IsSucess)
+            if (!payResult.IsSuccess)
             {
                 throw new InvalidOperationException($"Payment failed : {payResult.ErrorMessage}");
             }

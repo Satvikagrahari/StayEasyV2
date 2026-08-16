@@ -12,6 +12,7 @@ namespace StayEasy.Domain.Entities
         public decimal PricePerNight { get; set; }
         public int Capacity { get; set; }
         public int TotalRooms { get; set; }
+        public Hotel Hotel { get; set; }
 
     }
 }

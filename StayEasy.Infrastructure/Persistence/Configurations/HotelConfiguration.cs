@@ -16,9 +16,10 @@ namespace StayEasy.Infrastructure.Persistence.Configurations
             builder.Property(u => u.Name).IsRequired().HasMaxLength(100);
             builder.Property(u => u.City).IsRequired().HasMaxLength(50);
             builder.Property(u => u.Address).IsRequired().HasMaxLength(200);
-
-            builder.HasMany<Room>().WithOne().HasForeignKey(r => r.HotelId).OnDelete(DeleteBehavior.Cascade);
-
+            builder.HasMany(h => h.Rooms)
+                .WithOne(r => r.Hotel) 
+                .HasForeignKey(r => r.HotelId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

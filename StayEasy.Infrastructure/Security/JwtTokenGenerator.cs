@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using StayEasy.Application.Interfaces.External;
 using StayEasy.Domain.Entities;
@@ -19,7 +19,7 @@ namespace StayEasy.Infrastructure.Security
         }
         public string GenerateToken(User user)
         {
-            var secretKey = _configuration["JwtSetting:Secret"]!;
+            var secretKey = _configuration["JwtSettings:Secret"]!;
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
@@ -30,7 +30,7 @@ namespace StayEasy.Infrastructure.Security
                 new Claim(ClaimTypes.Role, user.Role)
             };
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSetting:Issuer"],
+                issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(double.Parse(_configuration["JwtSettings:ExpiryMinutes"]!)),

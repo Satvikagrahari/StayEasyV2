@@ -1,4 +1,4 @@
-﻿using StayEasy.Application.DTOs.Hotels;
+using StayEasy.Application.DTOs.Hotels;
 using StayEasy.Application.Interfaces.Repositories;
 using StayEasy.Domain.Entities;
 using System;
@@ -44,11 +44,12 @@ namespace StayEasy.Application.Services
                 HotelId = hotelId,
                 RoomType = dto.RoomType,
                 PricePerNight = dto.PricePerNight,
-                Capacity = dto.Capacity
+                Capacity = dto.Capacity,
+                TotalRooms = dto.TotalRooms
             };
             await _roomRepository.AddAsync(room);
             await _roomRepository.SaveChangesAsync();
-            return new RoomResponseDto(room.RoomId, room.HotelId, room.RoomType, room.PricePerNight, room.Capacity);
+            return new RoomResponseDto(room.RoomId, room.HotelId, room.RoomType, room.PricePerNight, room.Capacity, room.TotalRooms);
         }
         public async Task<IEnumerable<HotelResponseDto>> GetAllHotelsAsync(string? city)
         {

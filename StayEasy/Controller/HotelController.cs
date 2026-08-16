@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayEasy.Application.DTOs.Hotels;
@@ -32,7 +32,7 @@ namespace StayEasy.Api.Controller
         }
 
         [Authorize(Roles ="Admin")]
-        [HttpPost("{hotel:guid}/rooms")]
+        [HttpPost("{hotelId:guid}/rooms")]
         public async Task<IActionResult> AddRoomToHotel(Guid hotelId, CreateRoomDto request)
         {
             var response = await _hotelService.AddRoomAsync(hotelId,request);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,7 +10,8 @@ namespace StayEasy.Application.DTOs.Hotels
         Guid HotelId,
         string RoomType,
         decimal PricePerNight,
-        int Capacity
+        int Capacity,
+        int TotalRooms
     );
 
 }

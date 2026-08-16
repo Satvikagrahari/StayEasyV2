@@ -31,7 +31,7 @@ namespace StayEasy.Application.Services
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 UserName = dto.UserName,
-                Role = dto.Role ?? "Customer"               
+                Role = "Customer"               
             };
 
             await _userRepository.AddAsync(user);

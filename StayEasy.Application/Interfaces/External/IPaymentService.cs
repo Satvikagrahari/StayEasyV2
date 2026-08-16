@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace StayEasy.Application.Interfaces.External
         string CardHolderName);
 
     public record PaymentResponseDto(
-        bool IsSucess,
+        bool IsSuccess,
         string? TransactionId,
         string? ErrorMessage
         );

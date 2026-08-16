@@ -8,7 +8,6 @@ namespace StayEasy.Application.DTOs.Auth
     (
         string Email,
         string Password,
-        string UserName,
-        string? Role = "Customer"
+        string UserName        
     );
 }

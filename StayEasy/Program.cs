@@ -2,12 +2,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.Win32;
 using StayEasy.Api.MIddleware;
 using StayEasy.Application.Interfaces.External;
 using StayEasy.Application.Interfaces.Repositories;
+using StayEasy.Application.Services;
+using StayEasy.Domain.Entities;
 using StayEasy.Infrastructure.Persistence;
 using StayEasy.Infrastructure.Repositories;
 using StayEasy.Infrastructure.Security;
+using StayEasy.Infrastructure.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +25,19 @@ builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+//Register Application Services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+
+//Register the PaymentServiceClientRegister the PaymentServiceClient
+builder.Services.AddHttpClient<IPaymentService, PaymentServiceClient>(client =>
+{
+    // The URL Payment Microservice is running
+    client.BaseAddress = new Uri("http://localhost:5001");
+});
+
 
 // Configure JWT Authentication
 var secretKey = builder.Configuration["JwtSettings:Secret"]!;
@@ -46,11 +63,12 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "StayEasy API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Enter JWT token below. Example: 'Bearer {your_token}'",
+        Description = "Enter your JWT token below.",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -66,6 +84,28 @@ builder.Services.AddSwaggerGen(c =>
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<StayEasyDbContext>();
+
+    var admin = context.Users.FirstOrDefault(u => u.Email == "admin@stayeasy.com");
+    if (admin == null)
+    {
+        admin = new User
+        {
+            UserId = Guid.NewGuid(), 
+            Email = "admin@stayeasy.com",            
+            UserName = "Admin",
+            Role = "Admin",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123")
+        };
+        context.Users.Add(admin);
+        context.SaveChanges();
+    }
+}
+
+
 
 //Global Exception Middleware
 app.UseMiddleware<GlobalExceptionMiddleware>();
