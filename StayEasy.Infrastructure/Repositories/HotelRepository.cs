@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StayEasy.Application.Interfaces.Repositories;
 using StayEasy.Domain.Entities;
 using StayEasy.Infrastructure.Persistence;
@@ -19,6 +19,10 @@ namespace StayEasy.Infrastructure.Repositories
         public async Task<Hotel?> GetByIdAsync(Guid id)
         {
             return await _dbContext.Hotels.FindAsync(id);
+        }
+        public async Task<IEnumerable<Hotel>> GetAllWithRoomsAsync()
+        {
+            return await _dbContext.Hotels.Include(h => h.Rooms).AsNoTracking().ToListAsync();
         }
         public async Task<Hotel?> GetByIdWithRoomAsync(Guid id)
         {

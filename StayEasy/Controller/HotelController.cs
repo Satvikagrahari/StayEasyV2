@@ -16,6 +16,13 @@ namespace StayEasy.Api.Controller
             _hotelService = hotelService;
         }
 
+        [HttpGet("with-rooms")]
+        public async Task<IActionResult> GetHotelsWithRoomsAsync()
+        {
+            var hotels = await _hotelService.GetAllHotelWithRoomsAsync();
+            return Ok(hotels);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetHotels([FromQuery] string? city)
         {
@@ -39,5 +46,36 @@ namespace StayEasy.Api.Controller
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{hotelId:guid}")]
+        public async Task<IActionResult> UpdateHotelAsync(Guid hotelId, UpdateHotelDto request)
+        {
+            await _hotelService.UpdateHotelAsync(hotelId, request);
+            return NoContent();
+
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{hotelId:guid}")]
+        public async Task<IActionResult> DeleteHotelAsync(Guid hotelId)
+        {
+            await _hotelService.DeleteHotelAsync(hotelId);
+            return NoContent();
+        }
+
+        [Authorize(Roles="Admin")]
+        [HttpPut("{hotelId:guid}/rooms/{roomId:guid}")]
+        public async Task<IActionResult> UpdateRoomToHotelAsync(Guid hotelId, Guid roomId, UpdateRoomDto request)
+        {
+            await _hotelService.UpdateRoomAsync(roomId, request);
+            return NoContent();
+        }
+
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("{hotelId:guid}/rooms/{roomId:guid}")]
+        public async Task<IActionResult> DeleteRoomToHotelAsync(Guid hotelId, Guid roomId)
+        {
+            await _hotelService.DeleteRoomAsync(roomId);
+            return NoContent();
+        }
     }
 }

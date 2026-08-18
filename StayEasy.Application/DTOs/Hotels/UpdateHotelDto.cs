@@ -1,15 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace StayEasy.Application.DTOs.Hotels
 {
-    public record HotelResponseDto
+    public record UpdateHotelDto
     (
-        Guid HotelId,
         string Name,
         string Address,
-        string City,
-        List<RoomResponseDto>? Rooms = null
+        string City
     );
 }

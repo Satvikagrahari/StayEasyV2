@@ -60,5 +60,51 @@ namespace StayEasy.Application.Services
                 h.HotelId, h.Name, h.City, h.Address
             ));
         }
+
+        public async Task<IEnumerable<HotelResponseDto>> GetAllHotelWithRoomsAsync()
+        {
+            var hotels = await _hotelRepository.GetAllWithRoomsAsync();
+            return hotels.Select(h => new HotelResponseDto(h.HotelId, h.Name, h.Address, h.City,
+                h.Rooms?.Select(r=> new RoomResponseDto(r.RoomId,r.HotelId, r.RoomType, r.PricePerNight,r.Capacity, r.TotalRooms)).ToList()
+                ));
+        }
+
+        public async Task UpdateHotelAsync(Guid hotelId, UpdateHotelDto dto)
+        {
+            var hotel = await _hotelRepository.GetByIdAsync(hotelId) ?? throw new KeyNotFoundException("Hotel not found.");
+
+            hotel.Name = dto.Name;
+            hotel.Address = dto.Address;
+            hotel.City = dto.City;
+
+            await _hotelRepository.UpdateAsync(hotel);
+            await _hotelRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteHotelAsync(Guid hotelId)
+        {
+            var hotel = await _hotelRepository.GetByIdAsync(hotelId) ?? throw new KeyNotFoundException("Hotel not found.");
+            await _hotelRepository.DeleteAsync(hotel);
+            await _hotelRepository.SaveChangesAsync();
+        }
+
+        public async Task UpdateRoomAsync(Guid roomId, UpdateRoomDto dto)
+        {
+            var room = await _roomRepository.GetByIdAsync(roomId) ?? throw new KeyNotFoundException("Room not found.");
+
+            room.RoomType = dto.RoomType;
+            room.PricePerNight = dto.PricePerNight;
+            room.Capacity = dto.Capacity;
+            room.TotalRooms = dto.TotalRooms;
+
+            await _roomRepository.UpdateAsync(room);
+            await _roomRepository.SaveChangesAsync();
+        }
+        public async Task DeleteRoomAsync(Guid roomId)
+        {
+            var room = await _roomRepository.GetByIdAsync(roomId) ?? throw new KeyNotFoundException("Room not found.");
+            await _roomRepository.DeleteAsync(room);
+            await _roomRepository.SaveChangesAsync();
+        }
     }
 }
