@@ -94,5 +94,55 @@ namespace StayEasy.Application.Services
                 booking.PaymentTransactionId
                 );
         }
+
+        public async Task<IEnumerable<BookingResponseDto>> GetBookingsByDateRangeAsync(DateTime fromDate, DateTime endDate)
+        {
+            var bookings = await _bookingRepo.GetBookingsByDateRangeAsync(fromDate, endDate);
+            return bookings.Select(booking => new BookingResponseDto(
+                booking.BookingId,
+                booking.RoomId,
+                booking.CheckIn,
+                booking.CheckOut,
+                booking.TotalPrice,
+                booking.Status.ToString(),
+                booking.PaymentTransactionId));
+        }
+
+        public async Task<BookingResponseDto> GetBookingByIdAsync(Guid bookingId)
+        {
+            var booking = await _bookingRepo.GetByIdAsync(bookingId) ?? throw new KeyNotFoundException("Booking not found.");
+            return new BookingResponseDto(
+                booking.BookingId,
+                booking.RoomId,
+                booking.CheckIn,
+                booking.CheckOut,
+                booking.TotalPrice,
+                booking.Status.ToString(),
+                booking.PaymentTransactionId);
+        }
+
+        public async Task<IEnumerable<BookingResponseDto>> GetMyBookingsAsync(Guid userId)
+        {
+            var booking = await _bookingRepo.GetByUserIdAsync(userId);
+            return booking.Select(b=> new BookingResponseDto(b.BookingId, b.RoomId, b.CheckIn, b.CheckOut, b.TotalPrice,
+                b.Status.ToString(), b.PaymentTransactionId));
+        }
+
+        public async Task<BookingResponseDto> CancelBookingAsync(Guid userId, Guid bookingId)
+        {
+            var booking = await _bookingRepo.GetByIdAsync(bookingId) ?? throw new KeyNotFoundException("Booking not found");
+
+            if (booking.UserId != userId) throw new UnauthorizedAccessException("You cannot cancel someone else's booking.");
+
+            if (booking.Status == BookingStatus.Cancelled) throw new InvalidOperationException("This booking is already cancelled.");
+
+            if (booking.CheckIn > DateTime.UtcNow) throw new InvalidOperationException("You cannot cancel a booking after the check-in date has passed.");
+
+            booking.Status = BookingStatus.Cancelled;
+            await _bookingRepo.UpdateAsync(booking);
+            await _bookingRepo.SaveChangesAsync();
+            return new BookingResponseDto(booking.BookingId, booking.RoomId, booking.CheckIn, booking.CheckOut,
+                booking.TotalPrice, booking.Status.ToString(), booking.PaymentTransactionId);
+        }
     }
 }

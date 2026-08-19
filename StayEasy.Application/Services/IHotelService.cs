@@ -9,6 +9,7 @@ namespace StayEasy.Application.Services
     {
         Task<HotelResponseDto> CreateHotelAsync(CreateHotelDto dto);
         Task<RoomResponseDto> AddRoomAsync(Guid hotelId, CreateRoomDto dto);
+        Task<HotelResponseDto> GetHotelByIdAsync(Guid hotelId);
         Task<IEnumerable<HotelResponseDto>> GetAllHotelsAsync(string? city);
         Task<IEnumerable<HotelResponseDto>> GetAllHotelWithRoomsAsync();
         Task UpdateHotelAsync(Guid hotelId, UpdateHotelDto dto);

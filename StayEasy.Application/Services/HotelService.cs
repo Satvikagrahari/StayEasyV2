@@ -51,6 +51,18 @@ namespace StayEasy.Application.Services
             await _roomRepository.SaveChangesAsync();
             return new RoomResponseDto(room.RoomId, room.HotelId, room.RoomType, room.PricePerNight, room.Capacity, room.TotalRooms);
         }
+
+        public async Task<HotelResponseDto> GetHotelByIdAsync(Guid hotelId)
+        {
+            var hotel = await _hotelRepository.GetByIdWithRoomAsync(hotelId) ?? throw new KeyNotFoundException("Hotel not found.");
+            return new HotelResponseDto(
+                hotel.HotelId,
+                hotel.Name,
+                hotel.Address,
+                hotel.City,
+                hotel.Rooms?.Select(r => new RoomResponseDto(r.RoomId, r.HotelId, r.RoomType, r.PricePerNight, r.Capacity, r.TotalRooms)).ToList()
+            );
+        }
         public async Task<IEnumerable<HotelResponseDto>> GetAllHotelsAsync(string? city)
         {
             var hotels = await _hotelRepository.GetAllByCityAsync(city);

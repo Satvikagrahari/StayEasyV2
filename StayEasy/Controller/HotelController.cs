@@ -77,5 +77,13 @@ namespace StayEasy.Api.Controller
             await _hotelService.DeleteRoomAsync(roomId);
             return NoContent();
         }
+
+        [HttpGet("{hotelId:guid")] 
+        public async Task<IActionResult> GetHotelById(Guid hotelId)
+        {
+            var hotel = await _hotelService.GetHotelByIdAsync(hotelId);
+            return Ok(hotel);
+        }
+
     }
 }

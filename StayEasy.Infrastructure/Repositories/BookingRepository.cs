@@ -31,6 +31,12 @@ namespace StayEasy.Infrastructure.Repositories
                                                       && b.CheckIn < checkOut
                                                       && b.CheckOut > checkIn);
         }
+
+        public async Task<IEnumerable<Booking>> GetBookingsByDateRangeAsync(DateTime fromDate, DateTime endDate)
+        {
+            return await _dbContext.Bookings.Where(b => b.CheckIn < endDate && b.CheckOut > fromDate).AsNoTracking().ToListAsync();
+        }
+
         public async Task<int> GetActiveBookingsCountForDatesAsync(Guid roomId, DateTime checkIn, DateTime checkOut)
         {
             // Inventory Check: Count how many non-cancelled bookings overlap with these dates
