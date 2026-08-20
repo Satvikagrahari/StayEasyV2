@@ -1,4 +1,4 @@
-﻿using StayEasy.Application.Interfaces.External;
+using StayEasy.Application.Interfaces.External;
 using System;
 using System.Collections.Generic;
 using System.Text;

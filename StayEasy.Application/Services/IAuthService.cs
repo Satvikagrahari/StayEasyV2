@@ -9,5 +9,6 @@ namespace StayEasy.Application.Services
     {
         Task<AuthResponseDto> RegisterAsync(RegisterRequestDto dto);
         Task<AuthResponseDto> LoginAsync(LoginRequestDto dto);
+        Task<IEnumerable<UserResponseDto>> GetAllUsersAsync();
     }
 }

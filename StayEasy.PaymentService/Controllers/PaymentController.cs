@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StayEasy.PaymentService.Data;
+using StayEasy.PaymentService.Entities;
 using StayEasy.PaymentService.Models;
 namespace StayEasy.PaymentService.Controllers
 {
@@ -8,37 +10,71 @@ namespace StayEasy.PaymentService.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly ILogger<PaymentController> _logger;
-        public PaymentController(ILogger<PaymentController> logger)
+        private readonly PaymentDbContext _dbContext;
+        public PaymentController(ILogger<PaymentController> logger, PaymentDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
         [HttpPost("Process")]
-        public IActionResult ProcessPayment(PaymentRequest request)
+        public async Task<IActionResult> ProcessPayment(PaymentRequest request)
         {
             _logger.LogInformation($"Processing payment of {request.Amount} for Booking {request.BookingId}");
 
-            //basic validation
-            if(string.IsNullOrWhiteSpace(request.CardNumber) || request.CardNumber.Length < 15)
-            {
-                return BadRequest(new PaymentResponse(false, null, "Invalid card number length."));
-            }
+            // Mask card number for security (only show last 4 digits, e.g. ************1234)
+            string maskedCard = request.CardNumber.Length >= 4
+                ? new string('*', request.CardNumber.Length - 4) + request.CardNumber.Substring(request.CardNumber.Length - 4) : "****";
 
-            //simulated buisness logic
-            // If the card starts with '4' (Visa), approve it!
+
+            // Basic validation
+            if (string.IsNullOrWhiteSpace(request.CardNumber) || request.CardNumber.Length < 15)
+            {
+                return await SaveLogAndReturn(new PaymentLog
+                {
+                    BookingId = request.BookingId,
+                    Amount = request.Amount,
+                    CardHolderName = request.CardHolderName,
+                    MaskedCardNumber = maskedCard,
+                    IsSuccess = false,
+                    ErrorMessage = "Invalid card number length."
+                }, BadRequest);
+            }
+            // Simulated business logic
             if (request.CardNumber.StartsWith("4"))
             {
-                // Generate a fake transaction ID
                 string transactionId = $"TXN_{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
-
                 _logger.LogInformation($"Payment SUCCESS. Transaction ID: {transactionId}");
-
-                return Ok(new PaymentResponse(true, transactionId, null));
+                return await SaveLogAndReturn(new PaymentLog
+                {
+                    BookingId = request.BookingId,
+                    Amount = request.Amount,
+                    CardHolderName = request.CardHolderName,
+                    MaskedCardNumber = maskedCard,
+                    IsSuccess = true,
+                    TransactionId = transactionId
+                }, Ok);
             }
-            // Otherwise, decline it.
             _logger.LogWarning($"Payment DECLINED for Booking {request.BookingId}.");
-
-            return BadRequest(new PaymentResponse(false, null, "Card declined. Only Visa (starts with 4) is accepted in this simulation."));
+            return await SaveLogAndReturn(new PaymentLog
+            {
+                BookingId = request.BookingId,
+                Amount = request.Amount,
+                CardHolderName = request.CardHolderName,
+                MaskedCardNumber = maskedCard,
+                IsSuccess = false,
+                ErrorMessage = "Card declined. Only Visa (starts with 4) is accepted in this simulation."
+            }, BadRequest);
+        }
+        // Helper method to save to DB and format the response automatically
+        private async Task<IActionResult> SaveLogAndReturn(PaymentLog log, Func<object, IActionResult> actionResultFunc)
+        {
+            // 1. Save to database
+            _dbContext.PaymentLogs.Add(log);
+            await _dbContext.SaveChangesAsync();
+            // 2. Return HTTP response back to the Monolith
+            var response = new PaymentResponse(log.IsSuccess, log.TransactionId, log.ErrorMessage);
+            return actionResultFunc(response);
         }
     }
 }

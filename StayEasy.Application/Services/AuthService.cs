@@ -68,9 +68,19 @@ namespace StayEasy.Application.Services
             user.UserName,            
             user.Role,
             token,
-            DateTime.UtcNow.AddHours(2)
-        );
+            DateTime.UtcNow.AddHours(2));
+        }
 
+        public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllUserAsync();
+
+            return users.Select(u => new UserResponseDto(
+                u.UserId,
+                u.Email,
+                u.UserName,
+                u.Role
+                ));                
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StayEasy.Application.DTOs.Auth;
 using StayEasy.Application.Services;
@@ -25,6 +26,14 @@ namespace StayEasy.Api.Controller
         {
             var response = await _authService.LoginAsync(request);
             return Ok(response);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var users = await _authService.GetAllUsersAsync();
+            return Ok(users);
         }
     }
 }

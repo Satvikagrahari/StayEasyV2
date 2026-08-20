@@ -29,6 +29,12 @@ namespace StayEasy.Infrastructure.Repositories
         {
             return await _dbContext.Users.FindAsync(userId);
         }
+
+        public async Task<IEnumerable<User>> GetAllUserAsync()
+        {
+            return await _dbContext.Users.AsNoTracking().ToListAsync();
+            
+        }
         public async Task AddAsync(User user)
         {
             // Staging the insertion in memory

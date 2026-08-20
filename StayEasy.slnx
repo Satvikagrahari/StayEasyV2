@@ -6,5 +6,6 @@
   <Project Path="StayEasy.Domain/StayEasy.Domain.csproj" />
   <Project Path="StayEasy.Infrastructure/StayEasy.Infrastructure.csproj" />
   <Project Path="StayEasy.PaymentService/StayEasy.PaymentService.csproj" Id="4974b793-3890-4156-bc48-907b99900155" />
+  <Project Path="StayEasy.Test/StayEasy.Test.csproj" Id="82040992-635b-4fe1-a158-4888ef3da1d6" />
   <Project Path="StayEasy/StayEasy.Api.csproj" />
 </Solution>

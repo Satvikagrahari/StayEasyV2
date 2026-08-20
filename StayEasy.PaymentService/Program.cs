@@ -1,5 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using StayEasy.PaymentService.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<PaymentDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PaymentDb")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

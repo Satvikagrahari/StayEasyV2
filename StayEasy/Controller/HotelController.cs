@@ -78,7 +78,7 @@ namespace StayEasy.Api.Controller
             return NoContent();
         }
 
-        [HttpGet("{hotelId:guid")] 
+        [HttpGet("{hotelId:guid}")] 
         public async Task<IActionResult> GetHotelById(Guid hotelId)
         {
             var hotel = await _hotelService.GetHotelByIdAsync(hotelId);

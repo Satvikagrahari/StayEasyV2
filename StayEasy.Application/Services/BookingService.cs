@@ -136,7 +136,7 @@ namespace StayEasy.Application.Services
 
             if (booking.Status == BookingStatus.Cancelled) throw new InvalidOperationException("This booking is already cancelled.");
 
-            if (booking.CheckIn > DateTime.UtcNow) throw new InvalidOperationException("You cannot cancel a booking after the check-in date has passed.");
+            if (booking.CheckIn <= DateTime.UtcNow) throw new InvalidOperationException("You cannot cancel a booking after the check-in date has passed.");
 
             booking.Status = BookingStatus.Cancelled;
             await _bookingRepo.UpdateAsync(booking);
